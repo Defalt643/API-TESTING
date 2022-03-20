@@ -1,0 +1,439 @@
+{
+	"info": {
+		"_postman_id": "2403a449-c1b2-482f-8a14-6f9f03b5411a",
+		"name": "API Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Building",
+			"item": [
+				{
+					"name": "/buildings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200\",function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"pm.test(\"Result is array\",function(){\r",
+									"    let jsonData = pm.response.json()\r",
+									"    pm.expect(jsonData).to.be.a('array')\r",
+									"})\r",
+									"pm.test(\"Result are 2 items\",function(){\r",
+									"    let jsonData = pm.response.json()\r",
+									"    console.log(jsonData)\r",
+									"    pm.expect(jsonData.length).to.eql(2)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/buildings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/buildings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 201\",function(){\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"pm.test(\"Create building success\",function(){\r",
+									"    let jsonData = pm.response.json()\r",
+									"    pm.expect(jsonData.name).to.eql(\"ตึกคณะวิศวะกรรมศาสตร์\")\r",
+									"    pm.expect(jsonData.level).to.eql(8)\r",
+									"    pm.environment.set(\"buildingId\",jsonData._id)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "ตึกคณะวิศวะกรรมศาสตร์",
+									"type": "text"
+								},
+								{
+									"key": "level",
+									"value": "8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/buildings Check Dupilcate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 409\",function(){\r",
+									"    pm.response.to.have.status(409)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "ตึกคณะวิศวะกรรมศาสตร์",
+									"type": "text"
+								},
+								{
+									"key": "level",
+									"value": "8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/building/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const buildingId = pm.environment.get(\"buildingId\")\r",
+									"pm.test(\"Status 200\",function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"pm.test(\"Result id equal \"+buildingId,function(){\r",
+									"    let jsonData = pm.response.json()\r",
+									"    console.log(jsonData)\r",
+									"    pm.expect(jsonData._id).to.eql(buildingId)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/building/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200\",function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"pm.test(\"Create building success\",function(){\r",
+									"    let jsonData = pm.response.json()\r",
+									"    pm.expect(jsonData.name).to.eql(\"ตึกคณะวิศวะกรรม\")\r",
+									"    pm.expect(jsonData.level).to.eql(9)\r",
+									"    pm.environment.set(\"buildingId\",jsonData._id)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "ตึกคณะวิศวะกรรม",
+									"type": "text"
+								},
+								{
+									"key": "level",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "_id",
+									"value": "{{buildingId}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/building/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200\",function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"pm.test(\"Create building success\",function(){\r",
+									"    let jsonData = pm.response.json()\r",
+									"    pm.expect(jsonData.level).to.eql(8)\r",
+									"    pm.environment.set(\"buildingId\",jsonData._id)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "level",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "_id",
+									"value": "{{buildingId}}",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/building/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200\",function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/building/:id no object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 404\",function(){\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "ตึกคณะวิศวะกรรม",
+									"type": "text"
+								},
+								{
+									"key": "level",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "_id",
+									"value": "{{buildingId}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/building/:id no object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 404\",function(){\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "ตึกคณะวิศวะกรรม",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "level",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "_id",
+									"value": "{{buildingId}}",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
